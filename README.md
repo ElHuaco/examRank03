@@ -2,14 +2,18 @@
 Cree un programa con fopen, fread, fscanf, fcloase, realloc, calloc, malloc,
 free, write, memset, powf, sqrtf que pinte rectángulos siguiendo las órdenes
 de un "archivo de operaciones" de la forma:
-	>WIDT HEIGHT BACKGROUND_CHARACTER
-	>operation
-	>.
-	>.
-	>.
-	>operation (salto de línea final posible)
+	```
+	WIDT HEIGHT BACKGROUND_CHARACTER
+	operation
+	.
+	.
+	.
+	operation (salto de línea final posible)
+	```
 Las operaciones son de la forma:
-	>R(ó r) X Y WIDTH HEIGHT CHAR
+	```
+	R(ó r) X Y WIDTH HEIGHT CHAR
+	```
 Las coordenadas se refieren siempre a la esquina superior izquierda de cada
 char en el array. Se redondean hacia abajo. Un '0' en WIDTH o HEIGHT es un error.
 
