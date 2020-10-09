@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 12:11:47 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/10/09 13:18:01 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/10/09 13:42:59 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ static void	ft_addchar(char **str, char c)
 	*str = temp;
 }
 
-static int	set_dimensions_and_bg(unsigned int *dim, char *str)
+static int	set_dimensions_and_bg(unsigned int *dim, char *str, char ***output)
 {
 	char			*pos;
 	char			*pos2;
 	unsigned int	i;
-	unsigned int	j;
 
 	pos = ft_strchr(str, ' ');
 	if (!(pos))
@@ -52,28 +51,62 @@ static int	set_dimensions_and_bg(unsigned int *dim, char *str)
 		return (1);
 	*pos2 = '\0';
 	*(dim + 1) = ft_atoi(pos + 1);
-	*(dim + 2) = ft_atoi(pos2 + 1) + 48;
+	*(dim + 2) = pos2[1];
+	*output = malloc(sizeof(char *) * (dim[1] + 1));
+	*(*output + dim[1]) = NULL;
 	i = -1;
 	while (++i < dim[1])
 	{
-		j = -1;
-		while (++j < dim[0])
-			write(1, dim + 2, 1);
-		write(1, "\n", 1);
+		*(*output + i) = calloc(dim[0] + 1, sizeof(char));
+		memset(*(*output + i), dim[2], dim[0]);
 	}
 	return (0);
+}
+
+static int	rectangle_updt(char *str, char ***output)
+{
+	if ((str[0] != 'R') && (str[0] != 'r'))
+		return (1);
+	(str++)++;
+	if (!(pos = ft_strchr(str, ' ')))
+		return (1);
+	*pos = '\0';
+	xtl = ft_atoi(str);
+	str = pos + 1;
+	if (!(pos = ft_strchr(str, ' ')))
+		return (1);
+	ytl = ft_atoi(str);
+	str = pos + 1;
+	if (!(pos = ft_strchr(str, ' ')))
+		return (1);
+	width = ft_atoi(str);
+	str = pos + 1;
+	if (!(pos = ft_strchr(str, ' ')))
+		return (1);
+	height = ft_atoi(str);
+	str = pos + 1;
+	fill = *str;
 }
 
 static int	execute_orders(char **op)
 {
 	int				i;
+	char			**output;
 	unsigned int	dim_and_bg[3];
 
 	i = -1;
 	while (op[++i])
 	{
-		if ((i == 0) && (set_dimensions_and_bg(dim_and_bg, op[i])))
+		if ((i == 0) && (set_dimensions_and_bg(dim_and_bg, op[i], &output)))
 			return (error_exit(EFILE));
+		if ((i != 0) && (rectangle_updt(op[i], &output)))
+			return (error_exit(EFILE));
+	}
+	i = -1;
+	while (output[++i])
+	{
+		write(1, *(output + i), ft_strlen(output[i]));
+		write(1, "\n", 1);
 	}
 	return (0);
 }
@@ -97,8 +130,8 @@ int			main(int argc, char **argv)
 	operations = ft_split(text, '\n');
 	free(text);
 	remove_empty_str_from_arr(&operations);
-	int i = -1; while (operations[++i])
-		printf("line %d: %s\n", i, operations[i]);
+/*	int i = -1; while (operations[++i])
+		printf("line %d: %s\n", i, operations[i]);*/
 	return (execute_orders(operations));
 }
 

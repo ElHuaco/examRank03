@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 11:47:35 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/10/09 13:05:59 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/10/09 13:30:55 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <string.h>
 
 # define EARG "Error: argument\n"
 # define EFILE "Error: Operation file corrupted\n"
