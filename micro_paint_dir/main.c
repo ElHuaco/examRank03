@@ -6,7 +6,7 @@
 /*   By: aleon-ca <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/09 12:11:47 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/10/09 13:42:59 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/10/09 20:04:00 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,29 +63,42 @@ static int	set_dimensions_and_bg(unsigned int *dim, char *str, char ***output)
 	return (0);
 }
 
-static int	rectangle_updt(char *str, char ***output)
+static int	rectangle_updt(unsigned int *dim, char *str, char ***output)
 {
+	int		xtl;
+	int		ytl;
+	int		width;
+	int		height;
+	char	fill;
+	char	*pos;
+	int		i;
+
 	if ((str[0] != 'R') && (str[0] != 'r'))
 		return (1);
-	(str++)++;
+	str += 2;
 	if (!(pos = ft_strchr(str, ' ')))
 		return (1);
 	*pos = '\0';
-	xtl = ft_atoi(str);
+	xtl = ft_atoi_floor(str);
 	str = pos + 1;
 	if (!(pos = ft_strchr(str, ' ')))
 		return (1);
-	ytl = ft_atoi(str);
+	*pos = '\0';
+	ytl = ft_atoi_floor(str);
 	str = pos + 1;
 	if (!(pos = ft_strchr(str, ' ')))
 		return (1);
-	width = ft_atoi(str);
+	*pos = '\0';
+	width = ft_atoi_floor(str);
 	str = pos + 1;
 	if (!(pos = ft_strchr(str, ' ')))
 		return (1);
-	height = ft_atoi(str);
+	*pos = '\0';
+	height = ft_atoi_floor(str);
 	str = pos + 1;
 	fill = *str;
+	//Update output
+	return (0);
 }
 
 static int	execute_orders(char **op)
@@ -99,7 +112,7 @@ static int	execute_orders(char **op)
 	{
 		if ((i == 0) && (set_dimensions_and_bg(dim_and_bg, op[i], &output)))
 			return (error_exit(EFILE));
-		if ((i != 0) && (rectangle_updt(op[i], &output)))
+		if ((i != 0) && (rectangle_updt(dim_and_bg, op[i], &output)))
 			return (error_exit(EFILE));
 	}
 	i = -1;
@@ -134,6 +147,3 @@ int			main(int argc, char **argv)
 		printf("line %d: %s\n", i, operations[i]);*/
 	return (execute_orders(operations));
 }
-
-
-
