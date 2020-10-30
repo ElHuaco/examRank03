@@ -6,7 +6,7 @@
 /*   By: aleon-ca <aleon-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 15:01:13 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/10/12 15:01:15 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/10/30 12:45:18 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ typedef struct	s_rectangle
 }				t_rectangle;
 
 int				ft_strlen(char *str);
-int				error_exit(char *error_str);
-
+void			free_array(char **array);
+void			draw_output(char **output);
 #endif

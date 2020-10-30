@@ -6,7 +6,7 @@
 /*   By: aleon-ca <aleon-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 15:56:46 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/10/12 15:57:23 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/10/30 12:49:31 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ typedef struct	s_circle
 }				t_circle;
 
 int				ft_strlen(char *str);
-int				error_exit(char *error_str);
-
+void			free_array(char **arr);
+void			draw_output(char **output);
 #endif
