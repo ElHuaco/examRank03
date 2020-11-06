@@ -68,10 +68,8 @@ static int	output_update(char ***output, t_circle *circle)
 	{
 		j = -1;
 		while (*(*(*output + i) + ++j))
-		{
 			if ((belongs_to_circle((float)j, (float)i, circle)))
 				*(*(*output + i) + j) = circle->fill;
-		}
 	}
 	return (0);
 }
