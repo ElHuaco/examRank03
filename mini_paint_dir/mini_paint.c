@@ -6,7 +6,7 @@
 /*   By: aleon-ca <aleon-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 15:57:55 by aleon-ca          #+#    #+#             */
-/*   Updated: 2020/10/30 12:57:21 by aleon-ca         ###   ########.fr       */
+/*   Updated: 2020/11/06 12:15:46 by aleon-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ static int	set_dim_and_bg(FILE *op_file, char ***output)
 	char	bg;
 	int		i;
 
-	if ((fscanf(op_file, "%d %d %c", &width, &height, &bg) != 3))
+	if ((fscanf(op_file, "%d %d %c\n", &width, &height, &bg) != 3))
 		return (1);
-	fread(&i, 1, sizeof(char), op_file);
 	if ((width > 300) || (height > 300) || (width < 1) || (height < 1))
 		return (1);
 	*output = malloc(sizeof(char *) * (height + 1));
@@ -40,16 +39,16 @@ static int	belongs_to_circle(float x, float y, t_circle *circle)
 	float		distance;
 
 	distance = sqrtf(powf(circle->xc - x, 2) + powf(circle->yc - y, 2));
-	if ((distance - circle->radius) > 10e-6)
+	if (distance > circle->radius)
 		return (0);
 	else if (circle->type == 'C')
 		return (1);
 	else
 	{
-		if (((distance - circle->radius) < 1 + 10e-6)
-			&& ((distance - circle->radius) > -1 - 10e-6))
+		if ((circle->radius	- distance) < 1)
 			return (1);
-		return (0);
+		else
+			return (0);
 	}
 }
 
@@ -59,7 +58,7 @@ static int	output_update(char ***output, t_circle *circle)
 	int		j;
 
 	if (((circle->type != 'C') && (circle->type != 'c'))
-		|| (circle->radius <= 0e6))
+		|| (circle->radius <= 0))
 	{
 		free_array(*output);
 		return (1);
@@ -82,20 +81,14 @@ static int	execute_operations(FILE *op_file)
 	int				scan_ret;
 	t_circle		circle;
 	char			**output;
-	char			temp;
 
 	if ((set_dim_and_bg(op_file, &output)))
 		return (1);
-	while ((scan_ret = fscanf(op_file, "%c %f %f %f %c", &circle.type,
+	while ((scan_ret = fscanf(op_file, "%c %f %f %f %c\n", &circle.type,
 		&circle.xc, &circle.yc, &circle.radius, &circle.fill)) == 5)
-	{
 		if ((output_update(&output, &circle)))
 			return (1);
-		fread(&temp, 1, sizeof(char), op_file);
-	}
-	while ((fread(&temp, 1, sizeof(char), op_file)) && (temp == '\n'))
-		;
-	if ((scan_ret == -1) || ((scan_ret == 1) && (temp == '\n')))
+	if (scan_ret == -1)
 	{
 		draw_output(output);
 		free_array(output);
