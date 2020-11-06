@@ -71,10 +71,8 @@ static int	output_update(char ***output, t_rectangle *rect)
 	{
 		j = -1;
 		while (*(*(*output + i) + ++j))
-		{
 			if ((belongs_to_rectangle((float)j, (float)i, rect)))
 				*(*(*output + i) + j) = rect->fill;
-		}
 	}
 	return (0);
 }
